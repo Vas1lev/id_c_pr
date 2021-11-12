@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% block title %}
+base
+{% endblock title%}
+{% block content %}
+    {% for field in object_list %}
+        <hr>
+        <img src="{{ field.image.url }}" alt="" height="200px" width="200px">
+        <dl>
+            <dt>FIRST NAME</dt>
+            <dd>{{ field.first_name }}</dd>
+            <dt>LAST NAME</dt>
+            <dd>{{ field.last_name }}</dd>
+            <dt>CIT</dt>
+            <dd>{{ field.citizenship }}</dd>
+            <dt>GEN</dt>
+            <dd>{{ field.gen }}</dd>
+            <dt>PERSONAL NO</dt>
+            <dd>{{ field.personal_no }}</dd>
+            <dt>DATE OF BIRTH</dt>
+            <dd>{{ field.date_of_birth|date:"F d, Y" }}</dd>
+            <dt>DATE OF EXPIRY</dt>
+            <dd>{{ field.date_of_expiry|date:"F d, Y" }}</dd>
+            <dt>SIGNATURE</dt>
+            <dd>{{ field.signature }}</dd>
+            <dt>CARD No</dt>
+            <dd>{{ field.card_no }}</dd>
+            <dt>PLACE OF BIRTH</dt>
+            <dd>{{ field.place_of_birth }}</dd>
+            <dt>DATE OF ISSUE</dt>
+            <dd>{{ field.date_of_issue|date:"F d, Y" }}</dd>
+            <dt>ISSUING AUTHORITY</dt>
+            <dd>{{ field.issuing_authority }}</dd>
+            <dt>DEPARTMENT</dt>
+            <dd>{{ field.department }}</dd>
+            <dt>DESCRIPTION</dt>
+            <dd>{{ field.description }}</dd>
+        </dl>
+
+        <br>
+
+        <a href="{% url 'base:info-pdf-view' field.pk %}"><button class="btn btn-primary">pdf</button></a>
+
+        <br>
+        <hr>
+    {% endfor %}
+    <div style="position: absolute; top: 0; right: 0; margin: 20px">
+            <a href="{% url 'base:excel' %}"><button class="btn btn-primary">excel</button></a>
+
+        <a href="{% url 'base:info-json-view' %}"><button class="btn btn-primary">json</button></a>
+    </div>
+{% endblock content %}
+
