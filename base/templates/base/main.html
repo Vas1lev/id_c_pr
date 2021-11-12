@@ -45,9 +45,13 @@ base
         <hr>
     {% endfor %}
     <div style="position: absolute; top: 0; right: 0; margin: 20px">
-            <a href="{% url 'base:excel' %}"><button class="btn btn-primary">excel</button></a>
-
+    {% if object_list %}
+        <a href="{% url 'base:excel' %}"><button class="btn btn-primary">excel</button></a>
         <a href="{% url 'base:info-json-view' %}"><button class="btn btn-primary">json</button></a>
+    {% endif %}
+
+
+
     </div>
 {% endblock content %}
 
