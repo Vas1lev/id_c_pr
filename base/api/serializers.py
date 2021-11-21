@@ -1,8 +1,9 @@
 from rest_framework import serializers
-# from base.models import Info
+# from base.models import Description, Info
 
 
-class InfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        pass
+class DescriptionSerializer(serializers.ModelSerializer):
+    pass
+
+
 

@@ -31,10 +31,19 @@ base
             <dd>{{ field.date_of_issue|date:"F d, Y" }}</dd>
             <dt>ISSUING AUTHORITY</dt>
             <dd>{{ field.issuing_authority }}</dd>
-            <dt>DEPARTMENT</dt>
-            <dd>{{ field.department }}</dd>
-            <dt>DESCRIPTION</dt>
-            <dd>{{ field.description }}</dd>
+            {% if field.department %}
+                <dt>DEPARTMENT</dt>
+                <dd>{{ field.department }}</dd>
+            {% endif %}
+            {% if field.description %}
+                <dt>DESCRIPTION</dt>
+                {% for description in field.description.all %}
+                    {{ description }}
+                {% endfor %}
+            {% endif %}
+
+
+
         </dl>
 
         <br>

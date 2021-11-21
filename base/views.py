@@ -1,6 +1,6 @@
 import pandas as pd
 from django.shortcuts import render, get_list_or_404
-from .models import Info
+from .models import Info, Department
 
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -14,6 +14,8 @@ import pandas
 class InfoListView(ListView):
     model = Info
     template_name = 'base/main.html'
+
+
 
 
 
@@ -48,6 +50,10 @@ def data_frame_to_io(data_frame: pandas.DataFrame, sheet_name='Export') -> bytes
 
 
 def export(request):
+    # data_1 = list(Info.objects.values())
+    # data_2 = list(Department.objects.values("department"))
+    # data = [*data_1, *data_2]
+
     data = list(Info.objects.values())
     results = pandas.DataFrame(data=data)
     results['date_of_issue'] = results['date_of_issue'].apply(lambda a: pd.to_datetime(a).date())
