@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import RegexValidator
-from multiselectfield import MultiSelectField
+# from multiselectfield import MultiSelectField
 
 from base.mychoice import gen_choice
 
@@ -36,11 +36,12 @@ class Info(models.Model):
     issuing_authority = models.TextField(max_length=400, blank=False)
     image = models.ImageField(null=True, blank=True, upload_to='images/', default='default.jpg')
 
-    department = models.OneToOneField(Department, on_delete=models.CASCADE, default="", blank=True, null=True)
-    description = models.ManyToManyField(Description)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, default="", blank=True, null=True)
+    description = models.ManyToManyField(Description, null=True, blank=True)
 
     def __str__(self):
         return "{}, {}".format(self.last_name, self.first_name)
+
 
 
 

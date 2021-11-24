@@ -50,11 +50,14 @@ def data_frame_to_io(data_frame: pandas.DataFrame, sheet_name='Export') -> bytes
 
 
 def export(request):
-    # data_1 = list(Info.objects.values())
-    # data_2 = list(Department.objects.values("department"))
-    # data = [*data_1, *data_2]
 
-    data = list(Info.objects.values())
+    data = list(Info.objects.values(
+        "first_name", "last_name", "citizenship", "gen", "personal_no", "date_of_birth",
+        "date_of_expiry", "signature", "card_no", "place_of_birth", "date_of_issue",
+        "issuing_authority", "department__name", "image",
+    ))
+    for x in data:
+        x["department"] = x.pop("department__name")
     results = pandas.DataFrame(data=data)
     results['date_of_issue'] = results['date_of_issue'].apply(lambda a: pd.to_datetime(a).date())
     file_data = data_frame_to_io(results)
