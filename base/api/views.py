@@ -1,20 +1,25 @@
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
 from base.models import Info, Description
-from django.http import JsonResponse
-# from rest_framework import viewsets
-# from rest_framework.response import Response
+from base.api.serializers import DescriptionSerializer, InfoSerializer
 
 
 
-
-
+@csrf_exempt
 def django_models_json(request):
-    data = list(Info.objects.values(
-        "first_name", "last_name", "citizenship", "gen", "personal_no", "date_of_birth",
-        "date_of_expiry", "signature", "card_no", "place_of_birth", "date_of_issue",
-        "issuing_authority", "department__name", "image"
-    ))
-    for x in data:
-        x["department"] = x.pop("department__name")
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        snippets = Info.objects.all()
+        serializer = InfoSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
-    return JsonResponse(data, safe=False)
-
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = InfoSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
