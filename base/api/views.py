@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from base.models import Info, Description
-from base.api.serializers import DescriptionSerializer, InfoSerializer
+from base.api.serializers import InfoSerializer
 
 
 

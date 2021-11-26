@@ -1,15 +1,16 @@
 from rest_framework import serializers
-from base.models import Description, Info
-
-
-class DescriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = ['name']
-        model = Description
+from rest_framework.relations import StringRelatedField
+from base.models import Info
 
 
 class InfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = Info
+    department = StringRelatedField(read_only=True)
+    description = StringRelatedField(read_only=True, many=True)
 
+    class Meta:
+        model = Info
+        fields = [
+            'first_name', 'last_name', 'citizenship', 'gen', 'personal_no', 'date_of_birth',
+            'date_of_expiry', 'signature', 'card_no', 'place_of_birth', 'date_of_issue',
+            'issuing_authority', 'department', 'description', 'image'
+        ]
