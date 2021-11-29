@@ -1,9 +1,8 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from base.models import Info, Description
+from base.models import Info
 from base.api.serializers import InfoSerializer
-
 
 
 @csrf_exempt

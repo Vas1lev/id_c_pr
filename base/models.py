@@ -36,15 +36,8 @@ class Info(models.Model):
     issuing_authority = models.TextField(max_length=400, blank=False)
     image = models.ImageField(null=True, blank=True, upload_to='images/', default='default.jpg')
 
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, default="", blank=True, null=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, default="", blank=True, null=True)
     description = models.ManyToManyField(Description, null=True, blank=True)
 
     def __str__(self):
         return "{}, {}".format(self.last_name, self.first_name)
-
-
-
-
-
-
-

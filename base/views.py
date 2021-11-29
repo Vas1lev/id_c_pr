@@ -1,8 +1,11 @@
 import pandas as pd
 from django.shortcuts import render, get_list_or_404
-from .models import Info, Department
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.relations import StringRelatedField
 
-from django.http import HttpResponse
+from .models import Info, Department, Description
+from .api.serializers import InfoSerializer
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.views.generic import ListView
@@ -10,14 +13,14 @@ from django.views.generic import ListView
 import io
 import pandas
 
+from itertools import chain
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.core import serializers
+import json
 
 class InfoListView(ListView):
     model = Info
     template_name = 'base/main.html'
-
-
-
-
 
 
 def info_render_pdf_view(request, *args, **kwargs):
@@ -50,16 +53,12 @@ def data_frame_to_io(data_frame: pandas.DataFrame, sheet_name='Export') -> bytes
 
 
 def export(request):
+    snippets = Info.objects.all()
+    serializer = InfoSerializer(snippets, many=True)
+    data = serializer.data
 
-    data = list(Info.objects.values(
-        "first_name", "last_name", "citizenship", "gen", "personal_no", "date_of_birth",
-        "date_of_expiry", "signature", "card_no", "place_of_birth", "date_of_issue",
-        "issuing_authority", "department__name", "image",
-    ))
-    for x in data:
-        x["department"] = x.pop("department__name")
     results = pandas.DataFrame(data=data)
-    results['date_of_issue'] = results['date_of_issue'].apply(lambda a: pd.to_datetime(a).date())
+    # results['date_of_issue'] = results['date_of_issue'].apply(lambda a: pd.to_datetime(a).date())
     file_data = data_frame_to_io(results)
     response = HttpResponse(file_data, content_type='application/octet-stream')
     response['Content-Disposition'] = 'attachment; filename="export.xlsx"'
